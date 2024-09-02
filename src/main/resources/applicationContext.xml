@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!--Data Source Configuration-->
+    <bean id="ods" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@192.168.31.96:1521:xe"/>
+        <property name="username" value="system"/>
+        <property name="password" value="felix"/>
+    </bean>
+    <bean id="msds" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/spring_mini_projdb"/>
+        <property name="username" value="root"/>
+        <property name="password" value="felix"/>
+    </bean>
+    <bean id="dao" class="com.nt.dao.CustomerMySqlDAOImpl">
+        <constructor-arg name = "ds" ref="msds"/>
+<!--        <constructor-arg name= "ds" ref="ods"/>-->
+    </bean>
+    <bean id="service" class="com.nt.service.CustomerManagementServiceImpl">
+        <constructor-arg name="dao" ref="dao"/>
+    </bean>
+<!--Controller Class Cfg-->
+    <bean id="controller" class ="com.nt.controller.MainController">
+        <constructor-arg name="service" ref="service"/>
+    </bean>
+</beans>
